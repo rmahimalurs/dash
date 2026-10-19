@@ -1,0 +1,158 @@
+@use 'sass:color';
+@use './variables' as *;
+@use './breakpoints' as bp;
+
+.login-page {
+  min-height: 100vh;
+  color: $login-light-text;
+  margin: 0;
+  padding-block: 3rem;
+
+  @include bp.respond(sm) { padding-inline: 2rem; }
+  @include bp.respond(lg) { padding-inline: 4rem; }
+
+  @include bp.respond(md) {
+    &__hero,
+    &__card {
+      flex: 1 1 0;
+      width: 0;
+      max-width: none;
+      padding: 2rem;
+    }
+
+    &__hero {
+      h1 {
+        font-size: 3rem;
+        line-height: 1.05;
+      }
+
+      > div:first-child > div:first-of-type {
+        margin-top: 1.5rem;
+      }
+    }
+  }
+
+  @include bp.respond(lg) {
+    &__card {
+      flex: 0 1 430px;
+      width: auto;
+      max-width: 430px;
+    }
+  }
+
+  > * { position: relative; z-index: 1; }
+
+  &__hero {
+    background: transparent;
+    color: $login-light-text;
+
+    [class*='text-blue-100'] {
+      color: $login-light-muted !important;
+    }
+  }
+
+  &__area-card {
+    border-color: rgba(148, 163, 184, .4);
+    background: rgba(255, 255, 255, .3);
+    color: $login-light-text;
+
+    [class*='text-blue-200'] { color: $login-brand-light !important; }
+    [class*='text-blue-100'] { color: $login-light-muted !important; }
+
+    &:hover,
+    &.is-selected {
+      border-color: rgba(37, 99, 235, .5);
+      background: rgba(219, 234, 254, .45);
+    }
+  }
+
+  &__card {
+    background: transparent;
+    color: $login-light-text;
+    border: 1px solid $login-light-border;
+  }
+
+  &__title { color: $login-light-text !important; }
+  &__description,
+  &__footer { color: $login-light-muted; }
+  &__label { color: $login-light-text; }
+
+  &__input {
+    background: $login-light-input;
+    border-color: $login-light-border;
+    color: $login-light-text;
+
+    &::placeholder { color: color.adjust($login-light-muted, $lightness: 18%); }
+    &:focus { border-color: $login-focus; box-shadow: 0 0 0 3px rgba(56, 189, 248, .18); }
+  }
+
+  &__button {
+    background: $login-accent;
+    color: #fff;
+    &:hover { background: color.adjust($login-accent, $lightness: -7%); }
+  }
+
+  &__error {
+    background: $login-danger-bg;
+    border-color: $login-danger-border;
+    color: $login-danger-text;
+  }
+}
+
+.dark {
+  .login-page {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  color: $login-dark-text;
+
+  > * { position: relative; z-index: 1; }
+
+  &__hero {
+    background: transparent;
+    color: $login-dark-text;
+
+    [class*='text-blue-100'] { color: rgba(219, 234, 254, .8) !important; }
+  }
+
+  &__area-card {
+    border-color: rgba(255, 255, 255, .15);
+    background: rgba(255, 255, 255, .05);
+    color: $login-dark-text;
+
+    [class*='text-blue-200'] { color: #bfdbfe !important; }
+    [class*='text-blue-100'] { color: rgba(219, 234, 254, .65) !important; }
+
+    &:hover,
+    &.is-selected {
+      border-color: rgba(147, 197, 253, .6);
+      background: rgba(255, 255, 255, .14);
+    }
+  }
+
+  &__card {
+    background: transparent;
+    color: $login-dark-text;
+    border-color: $login-dark-border;
+  }
+  &__title { color: $login-dark-text !important; }
+  &__description,
+  &__footer { color: $login-dark-muted; }
+  &__label { color: $login-dark-text; }
+  &__input {
+    background: $login-dark-input !important;
+    border-color: $login-dark-border !important;
+    color: $login-dark-text !important;
+    &::placeholder { color: color.adjust($login-dark-muted, $lightness: 5%); }
+  }
+  &__button {
+    background: $login-accent-light;
+    &:hover { background: color.adjust($login-accent, $lightness: 8%); }
+  }
+  &__error {
+    background: rgba(127, 29, 29, .25);
+    border-color: rgba(252, 165, 165, .35);
+    color: #fecaca;
+  }
+  }
+}

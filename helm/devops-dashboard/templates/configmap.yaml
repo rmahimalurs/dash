@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "devops-dashboard.fullname" . }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "devops-dashboard.labels" . | nindent 4 }}
+data:
+  LDAP_URL: {{ .Values.config.ldapUrl | quote }}
+  LDAP_BASE_DN: {{ .Values.config.ldapBaseDn | quote }}
+  LDAP_ACCESS_GROUP: {{ .Values.config.ldapAccessGroup | quote }}
+  CLOUDBEES_EAST_DEV_URL: {{ .Values.config.cloudbeesEastDevUrl | quote }}
+  CLOUDBEES_EAST_PROD_URL: {{ .Values.config.cloudbeesEastProdUrl | quote }}
+  CLOUDBEES_GOV_DEV_URL: {{ .Values.config.cloudbeesGovDevUrl | quote }}
+  CLOUDBEES_GOV_PROD_URL: {{ .Values.config.cloudbeesGovProdUrl | quote }}
+  ARTIFACTORY_DEV_URL: {{ .Values.config.artifactoryDevUrl | quote }}
+  ARTIFACTORY_PROD_URL: {{ .Values.config.artifactoryProdUrl | quote }}
+  SONARQUBE_DEV_URL: {{ .Values.config.sonarqubeDevUrl | quote }}
+  SONARQUBE_PROD_URL: {{ .Values.config.sonarqubeProdUrl | quote }}
+  JIRA_URL: {{ .Values.config.jiraUrl | quote }}
+  JIRA_PROJECT: {{ .Values.config.jiraProject | quote }}
+  CONFLUENCE_URL: {{ .Values.config.confluenceUrl | quote }}
+  CONFLUENCE_SPACE: {{ .Values.config.confluenceSpace | quote }}
+  VICTOROPS_URL: {{ .Values.config.victoropsUrl | quote }}
+  JWT_EXPIRE_MINUTES: {{ .Values.config.jwtExpireMinutes | quote }}
+  GITHUB_ORG: {{ .Values.config.githubOrg | quote }}
+  GITHUB_DEFAULT_REPO: {{ .Values.config.githubRepo | quote }}
+  ITC_AUTHORIZED_EMAIL: {{ .Values.config.itcAuthorizedEmails | quote }}
+  ITC_AUTHORIZED_USERS: {{ .Values.config.itcAuthorizedUsers | quote }}

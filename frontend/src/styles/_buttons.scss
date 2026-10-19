@@ -1,0 +1,297 @@
+@use './variables' as *;
+
+// Shared application buttons. CMS Design System buttons remain available via
+// .usa-button; these variants provide the same spacing and focus treatment for
+// application actions that use the btn-* classes.
+@layer components {
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger,
+  .btn-maintenance {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: .5rem 1rem;
+    border-radius: .375rem;
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+    cursor: pointer;
+  }
+
+  // Compact, borderless action link used where a secondary action should not
+  // compete with the primary button in the same row.
+  .btn-ghost-link,
+  .btn-ghost-link:visited {
+    align-items: center;
+    display: inline-flex;
+    gap: .375rem;
+    margin: 0;
+    padding: .25rem .625rem;
+    border: 1px solid transparent;
+    border-radius: .375rem;
+    background: transparent;
+    color: $login-accent;
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+  }
+
+  .btn-ghost-link:hover {
+    border-color: rgba(37, 99, 235, .18);
+    background: rgba(37, 99, 235, .08);
+    color: #1d4ed8;
+  }
+
+  .btn-ghost-link:active {
+    background: rgba(37, 99, 235, .14);
+    color: #1e40af;
+  }
+
+  .btn-ghost-link:focus-visible {
+    outline: 2px solid $login-focus;
+    outline-offset: 2px;
+  }
+
+  .btn-copy {
+    align-items: center;
+    display: inline-flex;
+    gap: .375rem;
+    margin: 0;
+    padding: .25rem .625rem;
+    border: 1px solid transparent;
+    border-radius: .375rem;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+
+    &:hover {
+      border-color: #cbd5e1;
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    &:active { background: #cbd5e1; color: #1e293b; }
+    &:focus-visible { outline: 2px solid $login-focus; outline-offset: 2px; }
+  }
+
+  // Card-like external link variation used for tool and support links.
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: .5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba(8, 124, 193, .3);
+      background: rgba(239, 246, 255, .4);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $login-focus;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, .18);
+    }
+
+    &--borderless {
+      gap: .5rem;
+      padding: .625rem;
+      border-color: transparent;
+      background: transparent;
+    }
+
+    &__label {
+      flex: 1 1 auto;
+      min-width: 0;
+      color: #374151;
+      font-size: .875rem;
+      transition: color .15s ease;
+    }
+
+    &__icon,
+    &__external-icon {
+      flex: 0 0 auto;
+      transition: color .15s ease;
+    }
+
+    &__external-icon { margin-inline-start: auto; }
+
+    &:hover &__label,
+    &:focus-visible &__label,
+    &:hover &__icon,
+    &:focus-visible &__icon,
+    &:hover &__external-icon,
+    &:focus-visible &__external-icon {
+      color: $login-accent;
+    }
+  }
+
+  .btn-primary {
+    border: 1px solid $login-accent;
+    background: $login-accent;
+    color: #fff;
+
+    &:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  }
+
+  .btn-secondary {
+    border: 1px solid $login-light-border;
+    background: $login-light-surface;
+    color: $login-light-text;
+
+    &:hover { background: #f1f5f9; border-color: #b8c7d8; }
+  }
+
+  .btn-danger {
+    border: 1px solid #dc2626;
+    background: #dc2626;
+    color: #fff;
+
+    &:hover { background: #b91c1c; border-color: #b91c1c; }
+  }
+
+  .btn-maintenance {
+    border: 1px solid #c5d9e8;
+    background: #e8f3fb;
+    color: #075985;
+
+    &:hover:not(:disabled) {
+      border-color: #9cc8e5;
+      background: #d8ecf8;
+      color: #005ea8;
+    }
+
+    &:disabled {
+      border-color: #b8cedd;
+      background: #e2edf4;
+      color: #35627c;
+      opacity: 1;
+    }
+  }
+
+  .btn-primary:focus-visible,
+  .btn-secondary:focus-visible,
+  .btn-danger:focus-visible,
+  .btn-maintenance:focus-visible,
+  .usa-button:focus-visible {
+    outline: 2px solid $login-focus;
+    outline-offset: 2px;
+  }
+
+  .btn-primary:disabled,
+  .btn-secondary:disabled,
+  .btn-danger:disabled,
+  .btn-maintenance:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+  }
+
+  .btn-ghost-link,
+  .btn-ghost-link:visited {
+    color: #7dd3fc;
+  }
+
+  .btn-ghost-link:hover {
+    border-color: rgba(125, 211, 252, .28);
+    background: rgba(56, 189, 248, .12);
+    color: #bae6fd;
+  }
+
+  .btn-ghost-link:active {
+    background: rgba(56, 189, 248, .2);
+    color: #e0f2fe;
+  }
+
+  .btn-copy {
+    border-color: rgba(148, 163, 184, .28);
+    background: rgba(51, 65, 85, .7);
+    color: #cbd5e1;
+
+    &:hover {
+      border-color: rgba(125, 211, 252, .35);
+      background: rgba(71, 85, 105, .85);
+      color: #f1f5f9;
+    }
+
+    &:active { background: rgba(100, 116, 139, .85); color: #fff; }
+  }
+}
+
+.dark {
+  .link-card {
+    border-color: rgba(83, 190, 235, .28);
+
+    &--borderless {
+      border-color: transparent;
+    }
+
+    &:hover,
+    &:focus-visible {
+      border-color: rgba(33, 184, 255, .42);
+      background: rgba(30, 58, 138, .2);
+    }
+
+    &--borderless:hover,
+    &--borderless:focus-visible {
+      border-color: transparent;
+    }
+
+    &__label { color: #d1d5db; }
+  }
+
+  .link-card:hover .link-card__label,
+  .link-card:focus-visible .link-card__label,
+  .link-card:hover .link-card__icon,
+  .link-card:focus-visible .link-card__icon,
+  .link-card:hover .link-card__external-icon,
+  .link-card:focus-visible .link-card__external-icon {
+    color: #7dd3fc;
+  }
+
+  .btn-secondary {
+    border-color: $login-dark-border;
+    background: rgba(39, 55, 80, .7);
+    color: $login-dark-text;
+
+    &:hover { background: rgba(55, 70, 96, .82); border-color: #64748b; }
+  }
+
+  .btn-primary {
+    background: $login-accent;
+    border-color: $login-accent;
+
+    &:hover { background: #1d4ed8; border-color: #1d4ed8; }
+  }
+
+  .btn-maintenance {
+    border-color: #b8d8e8;
+    background: #e8f3fb;
+    color: #075985;
+
+    &:hover:not(:disabled) {
+      border-color: #8fc4df;
+      background: #d7edf8;
+      color: #0c4a6e;
+    }
+
+    &:disabled {
+      border-color: #b8cedd;
+      background: #e2edf4;
+      color: #35627c;
+      opacity: 1;
+    }
+  }
+}

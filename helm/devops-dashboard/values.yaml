@@ -1,0 +1,89 @@
+# ── Backend (FastAPI) ─────────────────────────────────────────────────────────
+backend:
+  image:
+    repository: artifactory.cloud.cms.gov/cms-devops-docker-local/devops-dashboard-backend
+    tag: "1.0.48"
+    pullPolicy: Always
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# ── Frontend (nginx + React) ──────────────────────────────────────────────────
+frontend:
+  image:
+    repository: artifactory.cloud.cms.gov/cms-devops-docker-local/devops-dashboard-frontend
+    tag: "1.0.42"
+    pullPolicy: Always
+  replicas: 2
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# ── Ingress ───────────────────────────────────────────────────────────────────
+ingress:
+  enabled: true
+  className: nginx
+  host: devops-dashboard.cloud.cms.gov
+  # Some reads pull a multi-MB report from GitHub before they can answer, which
+  # outlived the old 90s ceiling and surfaced as a 504 on a cold cache.
+  proxyReadTimeout: 300
+  proxyConnectTimeout: 10
+  tls:
+    enabled: true
+    secretName: devops-dashboard-tls   # populated once CMS issues the SSL cert
+
+# ── Non-secret application config ────────────────────────────────────────────
+config:
+  ldapUrl: "ldap://e3ss-prd-dmc01.awscloud.cms.local:3268"
+  ldapBaseDn: "OU=Accounts,OU=CMS,DC=awscloud,DC=cms,DC=local"
+  ldapBindDn: "dso-ss-dev@awscloud.cms.local"
+  # Only members of this AD group may sign in (bare CN or full DN).
+  ldapAccessGroup: "Hybrid-Cloud-DevOPS-Team"
+  cloudbeesEastDevUrl: "https://jenkins-dev-east.cloud.cms.gov/cjoc"
+  cloudbeesEastProdUrl: "https://jenkins-east.cloud.cms.gov/cjoc"
+  cloudbeesGovDevUrl: "https://jenkins-gc-dev-west.cloud.cms.gov/cjoc"
+  cloudbeesGovProdUrl: "https://jenkins-gc-west.cloud.cms.gov/cjoc"
+  artifactoryDevUrl: "https://artifactory-dev.cloud.cms.gov"
+  artifactoryProdUrl: "https://artifactory.cloud.cms.gov"
+  sonarqubeDevUrl: "https://sonarqube-dev.cloud.cms.gov"
+  sonarqubeProdUrl: "https://sonarqube.cloud.cms.gov"
+  jiraUrl: "https://jiraent.cms.gov"
+  jiraProject: "DMSC"
+  confluenceUrl: "https://confluenceent.cms.gov"
+  confluenceSpace: "COM"
+  victoropsUrl: "https://portal.victorops.com/client/cms-vdc"
+  jwtExpireMinutes: "480"
+  githubOrg: "CMS-Enterprise"
+  githubRepo: "cmscloud-devops"
+  itcAuthorizedEmails: "jerry.hendren1@cms.hhs.gov"
+  itcAuthorizedUsers: "rwrw,h4qt,rjt5"
+
+# ── Secret ────────────────────────────────────────────────────────────────────
+# Name of the pre-existing Kubernetes Secret (managed via SOPS outside this chart)
+existingSecret: devops-dashboard-secrets
+
+# ── Service account ───────────────────────────────────────────────────────────
+serviceAccount:
+  create: true
+  name: devops-dashboard
+
+# ── Image pull secret (Artifactory registry auth) ────────────────────────────
+imagePullSecrets:
+  - name: artifactory-pull-secret
+
+# ── Persistence (audit logs, RBAC roles, Datadog state) ──────────────────────
+persistence:
+  enabled: false
+  storageClass: ""
+  volumeName: ""
+  size: 1Gi
+  mountPath: /app/data

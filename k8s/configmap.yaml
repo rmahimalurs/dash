@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: devops-dashboard-config
+  namespace: devops-dashboard
+data:
+  LDAP_URL: "ldap://e3ss-prd-dmc01.awscloud.cms.local:3268"
+  LDAP_BASE_DN: "OU=Accounts,OU=CMS,DC=awscloud,DC=cms,DC=local"
+  LDAP_BIND_DN: "dso-ss-prod@awscloud.cms.local"
+  # CloudBees / Jenkins
+  CLOUDBEES_EAST_DEV_URL: "https://jenkins-dev-east.cloud.cms.gov/cjoc"
+  CLOUDBEES_EAST_PROD_URL: "https://jenkins-east.cloud.cms.gov/cjoc"
+  CLOUDBEES_GOV_DEV_URL: "https://jenkins-dev-west.cloud.cms.gov/cjoc"
+  CLOUDBEES_GOV_PROD_URL: "https://jenkins-gc-west.cloud.cms.gov/cjoc"
+  # Artifactory
+  ARTIFACTORY_DEV_URL: "https://artifactory-dev.cloud.cms.gov"
+  ARTIFACTORY_PROD_URL: "https://artifactory.cloud.cms.gov"
+  # SonarQube
+  SONARQUBE_DEV_URL: "https://sonarqube-dev.cloud.cms.gov"
+  SONARQUBE_PROD_URL: "https://sonarqube.cloud.cms.gov"
+  # Other tools
+  JIRA_URL: "https://jiraent.cms.gov"
+  JIRA_PROJECT: "DMSC"
+  CONFLUENCE_URL: "https://confluenceent.cms.gov"
+  CONFLUENCE_SPACE: "COM"
+  VICTOROPS_URL: "https://portal.victorops.com/client/cms-vdc"
+  ONBOARDING_CONFLUENCE_PAGE_ID: "815432509"
+  JWT_EXPIRE_MINUTES: "480"

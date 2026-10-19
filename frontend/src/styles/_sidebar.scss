@@ -1,0 +1,215 @@
+@use './variables' as *;
+
+.sidebar {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  min-height: 100vh;
+  height: 100vh;
+  flex: 0 0 15rem;
+  overflow: visible;
+  user-select: none;
+  background: $sidebar-light-bg;
+  color: $sidebar-light-text;
+  border-right: 1px solid $sidebar-light-border;
+  transition: width .2s ease-in-out, flex-basis .2s ease-in-out, background-color .2s ease, color .2s ease;
+
+  &--collapsed { width: 4rem; flex-basis: 4rem; }
+  &--collapsed .sidebar__brand-content { gap: 0; }
+  &--collapsed .sidebar__logo { width: 2.5rem; height: 2.5rem; }
+  &--collapsed .sidebar__toggle { right: .25rem; }
+  &--collapsed .sidebar__account-menu { right: auto; bottom: 0; left: calc(100% + .5rem); }
+
+  &__brand {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: 1rem .75rem 1.25rem;
+    border-bottom: 1px solid $sidebar-light-border;
+  }
+
+  &__brand-content { display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; gap: .5rem; }
+  &__user { display: flex; align-items: center; min-width: 0; gap: .625rem; }
+  &__logo { width: 7rem; height: 4rem; flex: 0 0 auto; border-radius: .375rem; object-fit: contain; }
+  &__brand-copy { overflow: hidden; text-align: center; }
+  &__brand-name { margin: 0; font-size: .875rem; font-weight: 600; line-height: 1.1; white-space: nowrap; }
+  &__brand-subtitle { margin: 0; color: $sidebar-light-muted; font-size: .75rem; line-height: 1.1; white-space: nowrap; }
+
+  &__toggle,
+  &__link,
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    border: 0;
+    border-radius: .375rem;
+    color: $sidebar-light-text;
+    font-size: .875rem;
+    font-weight: 500;
+    transition: background-color .1s ease, color .1s ease;
+  }
+
+  &__toggle {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    flex: 0 0 auto;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    background: transparent;
+    color: $sidebar-light-muted;
+    cursor: pointer;
+
+    &:hover { background: $sidebar-light-hover; color: $sidebar-light-text; }
+  }
+
+  &__nav { min-height: 0; flex: 1 1 auto; padding: 1rem .5rem; overflow-x: hidden; overflow-y: auto; }
+  &__section-label {
+    margin: 0 .5rem .5rem;
+    color: $sidebar-light-muted;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+
+  &__section-label--admin { margin-top: 1rem; }
+  &__link { width: 100%; padding: .625rem .625rem; text-decoration: none; }
+  &__link--collapsed { justify-content: center; }
+  &__link:hover,
+  &__action:hover { background: $sidebar-light-hover; color: $sidebar-light-text; }
+  &__link--active { background: $sidebar-accent; color: #fff; }
+  &__link--active:hover { background: $sidebar-accent; color: #fff; }
+  &__icon { flex: 0 0 auto; }
+  &__link-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  &__oncall,
+  &__bottom { flex: 0 0 auto; padding: .75rem .5rem; border-top: 1px solid $sidebar-light-border; }
+  &__oncall-content { padding: 0 .5rem; }
+  &__oncall-title { display: flex; align-items: center; gap: .375rem; margin: 0 0 .5rem; }
+  &__oncall-item { margin-bottom: .5rem; }
+  &__oncall-label { margin: 0; color: $sidebar-light-muted; font-size: .625rem; letter-spacing: .05em; text-transform: uppercase; }
+  &__oncall-name { margin: 0; font-size: .75rem; font-weight: 500; }
+  &__override-badge { display: inline-block; margin-left: .375rem; padding: .125rem .25rem; border-radius: .125rem; background: rgba(239, 68, 68, .8); color: #fff; font-size: .5625rem; font-weight: 700; line-height: 1; }
+  &__oncall-detail { margin: 0; color: $sidebar-light-muted; font-size: .625rem; }
+  &__oncall-loading { margin: 0; color: $sidebar-light-muted; font-size: .75rem; }
+  &__oncall-collapsed { position: relative; display: flex; justify-content: center; padding: .375rem 0; }
+  &__override-dot { position: absolute; top: -.125rem; right: -.125rem; width: .5rem; height: .5rem; border-radius: 50%; background: #ef4444; }
+
+  &__bottom { display: flex; flex-direction: column; gap: .25rem; padding-top: 1rem; padding-bottom: 1rem; }
+  &__action { width: 100%; padding: .625rem .625rem; background: transparent; cursor: pointer; }
+  &__action--collapsed { justify-content: center; }
+  &__action--signout { color: $sidebar-light-muted; }
+  &__action--signout:hover { background: rgba(239, 68, 68, .12); color: $sidebar-danger; }
+  &__account { position: relative; }
+  &__user {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: .5rem .625rem;
+    border: 0;
+    border-radius: .375rem;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color .1s ease, color .1s ease;
+    &:hover,
+    &:focus-visible { background: $sidebar-light-hover; }
+  }
+  &__user--collapsed { justify-content: center; padding-inline: 0; }
+  &__account-chevron {
+    margin-left: auto;
+    color: $sidebar-light-muted;
+    transform: rotate(-90deg);
+    transition: transform .15s ease;
+  }
+  &__account-chevron--open { transform: rotate(0deg); }
+  &__avatar { display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; flex: 0 0 auto; border-radius: 50%; background: $sidebar-accent; color: #fff; font-size: .75rem; font-weight: 600; }
+  &__user-copy { flex: 1; min-width: 0; }
+  &__user-name,
+  &__user-email { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  &__user-name { color: $sidebar-light-text; font-size: .75rem; font-weight: 500; }
+  &__user-email { color: $sidebar-light-muted; font-size: .75rem; }
+  &__account-menu {
+    position: absolute;
+    right: .5rem;
+    bottom: calc(100% + .5rem);
+    z-index: 50;
+    width: 13rem;
+    padding: .375rem;
+    border: 1px solid $sidebar-light-border;
+    border-radius: .625rem;
+    background: $sidebar-light-bg;
+    box-shadow: 0 .75rem 2rem rgba(15, 23, 42, .18);
+  }
+  &__account-menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: .625rem;
+    padding: .625rem .75rem;
+    border: 0;
+    border-radius: .375rem;
+    background: transparent;
+    color: $sidebar-light-text;
+    font-size: .8125rem;
+    text-align: left;
+    cursor: pointer;
+    &:hover,
+    &:focus-visible { background: $sidebar-light-hover; }
+  }
+  &__account-menu-item--signout {
+    margin-top: .25rem;
+    border-top: 1px solid $sidebar-light-border;
+    border-radius: 0 0 .375rem .375rem;
+    color: $sidebar-danger;
+  }
+}
+
+.dark .sidebar {
+  background: $sidebar-dark-bg;
+  color: $sidebar-dark-text;
+  border-right: 1px solid $sidebar-dark-border;
+
+  .sidebar__action { color: $sidebar-dark-text; }
+  .sidebar__brand { border-color: $sidebar-dark-border; }
+  .sidebar__brand-subtitle,
+  .sidebar__section-label,
+  .sidebar__oncall-label,
+  .sidebar__oncall-detail,
+  .sidebar__oncall-loading,
+  .sidebar__action--signout,
+  .sidebar__user-email { color: $sidebar-dark-muted; }
+  .sidebar__toggle { color: $sidebar-dark-muted; }
+  .sidebar__toggle:hover,
+  .sidebar__link:hover,
+  .sidebar__action:hover { background: $sidebar-dark-hover; color: $sidebar-dark-text; }
+  .sidebar__link { color: rgba(244, 247, 251, .7); }
+  .sidebar__link--active { background: $sidebar-accent; color: #fff; }
+  .sidebar__link--active:hover { background: $sidebar-accent; color: #fff; }
+  .sidebar__oncall,
+  .sidebar__bottom { border-color: $sidebar-dark-border; }
+  .sidebar__user:hover,
+  .sidebar__user:focus-visible,
+  .sidebar__account-menu-item:hover,
+  .sidebar__account-menu-item:focus-visible { background: $sidebar-dark-hover; }
+  .sidebar__account-chevron { color: $sidebar-dark-muted; }
+  .sidebar__account-menu {
+    border-color: $sidebar-dark-border;
+    background: $sidebar-dark-bg;
+    box-shadow: 0 .75rem 2rem rgba(0, 0, 0, .35);
+  }
+  .sidebar__account-menu-item { color: $sidebar-dark-text; }
+  .sidebar__account-menu-item--signout { border-color: $sidebar-dark-border; color: $sidebar-danger; }
+  .sidebar__user-name { color: $sidebar-dark-text; }
+  .sidebar__action--signout:hover { background: rgba(239, 68, 68, .2); color: $sidebar-danger; }
+}

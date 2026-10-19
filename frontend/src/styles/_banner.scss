@@ -1,0 +1,31 @@
+@use './variables' as *;
+
+.cms-banner {
+  background: $banner-light-bg;
+  border-bottom: 1px solid $banner-light-border;
+  color: $banner-light-text;
+
+  &--compact {
+    .ds-c-usa-banner__header {
+      min-height: 2.25rem;
+      padding-inline: 1rem;
+      padding-block: .25rem;
+      font-size: .75rem;
+    }
+
+    .ds-c-usa-banner__guidance-container { padding-inline: 1rem; }
+
+    .ds-c-usa-banner__header-icon { width: .875rem; height: .875rem; }
+    .ds-c-usa-banner__button,
+    .ds-c-usa-banner__action { color: $banner-light-link; }
+  }
+}
+
+.dark .cms-banner {
+  background: $banner-dark-bg;
+  border-color: $banner-dark-border;
+  color: $banner-dark-text;
+
+  .ds-c-usa-banner__button,
+  .ds-c-usa-banner__action { color: $banner-dark-link; }
+}

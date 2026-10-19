@@ -1,0 +1,118 @@
+// Semantic alert surface. Variants own their foreground, background, border,
+// and icon colors so the same markup works in both themes.
+:root {
+  --alert__padding: 1rem 1.5rem;
+  --alert__background-color--warn: var(--alert-background-warning);
+  --alert__border-color--warn: var(--alert-border-warning);
+  --alert__font-color: var(--alert-text-warning);
+}
+
+.dark {
+  --alert__padding: 1rem 1.5rem;
+  // Keep the CMS Design System warning tokens readable on the app's dark blue-gray surfaces.
+  --alert__background-color--warn: var(--alert-background-warning);
+  --alert__border-color--warn: var(--alert-border-warning);
+  --alert__font-color: var(--alert-text-warning);
+
+  .ds-c-alert--warn {
+    --alert__border-left-color: var(--alert-border-warning);
+  }
+}
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  border: 1px solid var(--alert-border);
+  padding: 1rem;
+  background: var(--alert-background);
+  color: var(--alert-text);
+
+  &__icon {
+    flex: 0 0 auto;
+    color: var(--alert-icon);
+  }
+
+  &__content {
+    min-width: 0;
+  }
+
+  &__action {
+    margin-inline-start: auto;
+  }
+
+  &--compact {
+    padding: .5rem .75rem;
+  }
+
+  &--info {
+    --alert-background: var(--alert-background-info);
+    --alert-border: var(--alert-border-info);
+    --alert-text: var(--alert-text-info);
+    --alert-icon: var(--alert-icon-info);
+  }
+
+  &--success {
+    --alert-background: var(--alert-background-success);
+    --alert-border: var(--alert-border-success);
+    --alert-text: var(--alert-text-success);
+    --alert-icon: var(--alert-icon-success);
+  }
+
+  &--warning {
+    --alert-background: var(--alert__background-color--warn);
+    --alert-border: var(--alert__border-color--warn);
+    --alert-text: var(--alert-text-warning);
+    --alert-icon: var(--alert-icon-warning);
+  }
+
+  &--error {
+    --alert-background: var(--alert-background-error);
+    --alert-border: var(--alert-border-error);
+    --alert-text: var(--alert-text-error);
+    --alert-icon: var(--alert-icon-error);
+  }
+}
+
+// Keep the CMS warning treatment visually distinct: a strong left rail with a
+// thin outline around the remaining edges.
+.ds-c-alert--warn {
+  border: 1px solid var(--alert__border-color--warn) !important;
+  border-inline-start: .25rem solid var(--alert__border-color--warn) !important;
+}
+
+.maintenance-prereq-alert {
+  .ds-c-alert__body {
+    flex: 1 1 auto;
+  }
+}
+
+.dark {
+  .alert {
+    &--info {
+      --alert-background: var(--alert-background-info);
+      --alert-border: var(--alert-border-info);
+      --alert-text: var(--alert-text-info);
+      --alert-icon: var(--alert-icon-info);
+    }
+
+    &--success {
+      --alert-background: var(--alert-background-success);
+      --alert-border: var(--alert-border-success);
+      --alert-text: var(--alert-text-success);
+      --alert-icon: var(--alert-icon-success);
+    }
+
+    &--warning {
+      --alert-text: var(--alert-text-warning);
+      --alert-icon: var(--alert-icon-warning);
+    }
+
+    &--error {
+      --alert-background: var(--alert-background-error);
+      --alert-border: var(--alert-border-error);
+      --alert-text: var(--alert-text-error);
+      --alert-icon: var(--alert-icon-error);
+    }
+  }
+}

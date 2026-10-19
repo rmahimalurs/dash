@@ -1,0 +1,228 @@
+pipeline {
+  agent {
+    kubernetes {
+      defaultContainer 'tooling'
+      yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  imagePullSecrets:
+    - name: docker-credentials
+  containers:
+    # Kaniko unpacks the image it builds into its own root filesystem, so it
+    # gets a container of its own. Sharing one with the deploy tooling leaves
+    # that tooling replaced by whatever was built last.
+    - name: kaniko
+      image: artifactory.cloud.cms.gov/docker/kaniko-project/executor:v1.24.0-debug
+      command: ["/busybox/cat"]
+      tty: true
+      resources:
+        requests:
+          cpu: "1"
+          memory: 2Gi
+        limits:
+          cpu: "2"
+          memory: 6Gi
+    - name: tooling
+      image: artifactory.cloud.cms.gov/cms-devops-docker-local/devops-tooling:1.0.1
+      command: ["cat"]
+      tty: true
+      resources:
+        requests:
+          cpu: "250m"
+          memory: 512Mi
+        limits:
+          cpu: "1"
+          memory: 2Gi
+'''
+    }
+  }
+
+  options {
+    disableConcurrentBuilds()
+    buildDiscarder(logRotator(numToKeepStr: '30'))
+    timeout(time: 60, unit: 'MINUTES')
+  }
+
+  parameters {
+    string(
+      name: 'BRANCH',
+      defaultValue: 'main',
+      description: 'Branch of CMS-Enterprise/devops-dashboard to build and deploy.'
+    )
+    booleanParam(
+      name: 'DEPLOY',
+      defaultValue: true,
+      description: 'Uncheck to build and push the images without rolling out the beta.'
+    )
+  }
+
+  environment {
+    NAMESPACE  = 'dashboard-beta'
+    RELEASE    = 'dashboard-beta'
+    REGISTRY   = 'artifactory.cloud.cms.gov/cms-devops-docker-local'
+    CHART      = 'cms-devops-helm/devops-dashboard'
+    CHART_VER  = '1.0.56'
+    HELM_REPO  = 'https://artifactory.cloud.cms.gov/artifactory/cms-devops-helm-charts'
+    API_SERVER = 'https://51CB8819275204E1F323D59F8A86C706.yl4.us-east-1.eks.amazonaws.com'
+  }
+
+  stages {
+    stage('Checkout pipeline') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Checkout source branch') {
+      steps {
+        script {
+          // Two ways in. A multibranch job is already on the branch that was
+          // pushed, so BRANCH_NAME is set and the pipeline checkout is the
+          // source. The standalone job is pinned to main for its Jenkinsfile
+          // and takes the branch as a parameter, so it clones that separately.
+          env.SOURCE_BRANCH = env.BRANCH_NAME ?: params.BRANCH
+
+          def src
+          if (env.BRANCH_NAME) {
+            dir('src') {
+              src = checkout scm
+            }
+          } else {
+            // Reuses the job's own git credential rather than taking a second one.
+            dir('src') {
+              src = checkout([
+                $class: 'GitSCM',
+                branches: [[name: "*/${params.BRANCH}"]],
+                userRemoteConfigs: scm.userRemoteConfigs,
+                extensions: [[$class: 'CloneOption', shallow: true, depth: 1, noTags: true]]
+              ])
+            }
+          }
+          // Taken from the checkout, not from git: the clone happens in the jnlp
+          // container, so safe.directory is unset for the one running these steps.
+          env.SOURCE_SHA = (src.GIT_COMMIT ?: 'unknown').take(7)
+
+          def slug = env.SOURCE_BRANCH.toLowerCase().replaceAll(/[^a-z0-9._-]/, '-')
+          if (slug.length() > 40) { slug = slug.substring(0, 40) }
+          env.IMAGE_TAG = "beta-${slug}-${env.BUILD_NUMBER}"
+          currentBuild.displayName = "#${env.BUILD_NUMBER} ${env.SOURCE_BRANCH}"
+          currentBuild.description = "${env.IMAGE_TAG} (${env.SOURCE_SHA})"
+          echo "building ${env.IMAGE_TAG} from ${env.SOURCE_BRANCH} at ${env.SOURCE_SHA}"
+        }
+      }
+    }
+
+    stage('Build images') {
+      steps {
+        container('kaniko') {
+          // The namespace pull secret cannot push, so kaniko gets its own credential.
+          withCredentials([usernamePassword(
+            credentialsId: 'artifactory-push',
+            usernameVariable: 'ART_USER',
+            passwordVariable: 'ART_TOKEN'
+          )]) {
+            sh '''
+              set -eu
+              mkdir -p /kaniko/.docker
+              AUTH=$(printf '%s:%s' "$ART_USER" "$ART_TOKEN" | base64 | tr -d '\\n')
+              cat > /kaniko/.docker/config.json <<JSON
+              { "auths": { "artifactory.cloud.cms.gov": { "auth": "${AUTH}" } } }
+JSON
+            '''
+            script {
+              // Each Dockerfile COPYs as if its own directory were the context.
+              ['backend', 'frontend'].each { component ->
+                sh """
+                  set -eu
+                  /kaniko/executor \
+                    --context=dir://\${WORKSPACE}/src/${component} \
+                    --dockerfile=Dockerfile \
+                    --destination=${env.REGISTRY}/devops-dashboard-${component}:${env.IMAGE_TAG} \
+                    --cache=true \
+                    --cache-repo=${env.REGISTRY}/devops-dashboard-beta-cache \
+                    --snapshot-mode=redo
+                """
+              }
+            }
+          }
+        }
+      }
+    }
+
+    stage('Deploy') {
+      when { expression { (params.DEPLOY == null ? true : params.DEPLOY) } }
+      steps {
+        container('tooling') {
+          withCredentials([string(credentialsId: 'jfrog-dev-beta-deployer-token', variable: 'K8S_TOKEN')]) {
+            sh '''
+              set -eu
+              export KUBECONFIG="${WORKSPACE}/.kubeconfig-beta"
+              kubectl config set-cluster jfrog-dev \
+                --server="${API_SERVER}" \
+                --certificate-authority="${WORKSPACE}/ci/jfrog-dev-ca.crt" \
+                --embed-certs=true
+              kubectl config set-credentials beta-deployer --token="${K8S_TOKEN}"
+              kubectl config set-context beta \
+                --cluster=jfrog-dev --user=beta-deployer --namespace="${NAMESPACE}"
+              kubectl config use-context beta
+
+              kubectl -n "${NAMESPACE}" get deploy >/dev/null
+
+              helm repo add cms-devops-helm "${HELM_REPO}" >/dev/null
+              helm repo update cms-devops-helm >/dev/null
+              helm upgrade --install "${RELEASE}" "${CHART}" \
+                --version "${CHART_VER}" \
+                --namespace "${NAMESPACE}" \
+                --values "${WORKSPACE}/ci/beta-values.yaml" \
+                --set backend.image.tag="${IMAGE_TAG}" \
+                --set frontend.image.tag="${IMAGE_TAG}" \
+                --wait --timeout 10m
+            '''
+          }
+        }
+      }
+    }
+
+    stage('Verify') {
+      when { expression { (params.DEPLOY == null ? true : params.DEPLOY) } }
+      steps {
+        container('tooling') {
+          sh '''
+            set -eu
+            export KUBECONFIG="${WORKSPACE}/.kubeconfig-beta"
+            kubectl -n "${NAMESPACE}" rollout status deploy/${RELEASE}-devops-dashboard-backend  --timeout=5m
+            kubectl -n "${NAMESPACE}" rollout status deploy/${RELEASE}-devops-dashboard-frontend --timeout=5m
+            kubectl -n "${NAMESPACE}" get pods -o wide
+          '''
+          script {
+            // Prove the running image is this build's, not an older replica set.
+            def live = sh(
+              returnStdout: true,
+              script: """
+                export KUBECONFIG="\${WORKSPACE}/.kubeconfig-beta"
+                kubectl -n ${env.NAMESPACE} get deploy ${env.RELEASE}-devops-dashboard-backend \
+                  -o jsonpath='{.spec.template.spec.containers[0].image}'
+              """
+            ).trim()
+            if (!live.endsWith(":${env.IMAGE_TAG}")) {
+              error "beta is running ${live}, expected tag ${env.IMAGE_TAG}"
+            }
+            echo "beta is serving ${live}"
+          }
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      container('tooling') {
+        sh 'rm -f "${WORKSPACE}/.kubeconfig-beta" || true'
+      }
+    }
+    success {
+      echo "https://dashboard-beta.cloud.cms.gov  (${env.IMAGE_TAG} from ${env.SOURCE_SHA})"
+    }
+  }
+}

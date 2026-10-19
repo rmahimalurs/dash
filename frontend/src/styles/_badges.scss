@@ -1,0 +1,53 @@
+@use './variables' as *;
+
+// CMS-style compact badge foundation. Existing status-* classes extend this
+// foundation so current widget markup keeps the same light-mode appearance.
+@layer components {
+  .status-expired,
+  .status-never-expires {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 1.25rem;
+    padding: .125rem .5rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  // CMS system color token variations following the CMS badge modifier pattern.
+  // Dark Sky is used for development and Windsor for production.
+  .ds-c-badge--prod {
+    background: var(--badge-background-prod);
+    color: var(--badge-text-prod);
+    border-color: var(--badge-border-prod);
+  }
+
+  .ds-c-badge--dev {
+    background: var(--badge-background-dev);
+    color: var(--badge-text-dev);
+    border-color: var(--badge-border-dev);
+  }
+
+  // Compact CMS badge variation for environment and status labels.
+  .ds-c-badge--xs {
+    font-size: .75rem;
+    line-height: 1;
+    padding: .25rem .45rem;
+  }
+
+  .status-expired {
+    background: var(--status-expired-background);
+    color: var(--status-expired-text);
+    border-color: var(--status-expired-border);
+  }
+
+  .status-never-expires {
+    background: var(--status-never-expires-background);
+    color: var(--status-never-expires-text);
+    border-color: var(--status-never-expires-border);
+  }
+}

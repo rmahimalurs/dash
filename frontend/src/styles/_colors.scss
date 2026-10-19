@@ -1,0 +1,86 @@
+// Raw CMS application color tokens. Component semantics are mapped in
+// _variables.scss so these values remain the single source of truth.
+:root {
+  // CMS Granite 100
+  --color-gray-lightest: #d9d9d9;
+
+  // CMS badge palette tokens
+  --color-badge-background: #5a5a5a;
+  --color-badge-info-background: #0071bc;
+  --color-badge-success-background: #12890e;
+  --color-badge-warning-background: #f8c41f;
+  --color-badge-error-background: #e31c3d;
+  --color-badge-font: #ffffff;
+  --color-badge-warning-font: #262626;
+
+  // Legacy widget status badges — light theme
+  --color-status-expired-background: #fecaca;
+  --color-status-expired-border: #fca5a5;
+  --color-status-expired-text: #7f1d1d;
+  --color-status-never-expires-background: #dbeafe;
+  --color-status-never-expires-border: #bfdbfe;
+  --color-status-never-expires-text: #1d4ed8;
+
+  // Alerts — light theme
+  --color-alert-info-background: #eff6ff;
+  --color-alert-info-border: #bfdbfe;
+  --color-alert-info-text: #1e40af;
+  --color-alert-info-icon: #2563eb;
+  --color-alert-success-background: #f0fdf4;
+  --color-alert-success-border: #bbf7d0;
+  --color-alert-success-text: #166534;
+  --color-alert-success-icon: #16a34a;
+  --color-alert-warning-background: #fffbeb;
+  --color-alert-warning-border: #fde68a;
+  --color-alert-warning-text: #92400e;
+  --color-alert-warning-icon: #d97706;
+  --color-alert-error-background: #fef2f2;
+  --color-alert-error-border: #fecaca;
+  --color-alert-error-text: #b91c1c;
+  --color-alert-error-icon: #dc2626;
+
+  // Environment badges — light theme. Dark Sky is used for development and
+  // Windsor is used for production.
+  --color-badge-dev-background: #ecf4fa;
+  --color-badge-dev-border: #c5dff1;
+  --color-badge-dev-text: #1f4a68;
+  --color-badge-prod-background: #edeaf4;
+  --color-badge-prod-border: #c9c0de;
+  --color-badge-prod-text: #351f66;
+}
+
+.dark {
+  // Alerts — dark theme
+  --color-alert-info-background: rgba(30, 64, 175, .20);
+  --color-alert-info-border: rgba(96, 165, 250, .34);
+  --color-alert-info-text: #bfdbfe;
+  --color-alert-info-icon: #93c5fd;
+  --color-alert-success-background: rgba(6, 95, 70, .22);
+  --color-alert-success-border: rgba(52, 211, 153, .30);
+  --color-alert-success-text: #a7f3d0;
+  --color-alert-success-icon: #6ee7b7;
+  --color-alert-warning-background: rgba(255, 242, 128, .14);
+  --color-alert-warning-border: #f4c542;
+  --color-alert-warning-text: #fde68a;
+  --color-alert-warning-icon: #fbbf24;
+  --color-alert-error-background: rgba(127, 29, 29, .22);
+  --color-alert-error-border: rgba(248, 113, 113, .34);
+  --color-alert-error-text: #fecaca;
+  --color-alert-error-icon: #fca5a5;
+
+  // Environment badges — dark theme
+  --color-badge-dev-background: rgba(42, 127, 180, .55);
+  --color-badge-dev-border: rgba(125, 211, 252, .65);
+  --color-badge-dev-text: #e0f2fe;
+  --color-badge-prod-background: rgba(91, 60, 145, .65);
+  --color-badge-prod-border: rgba(196, 181, 253, .60);
+  --color-badge-prod-text: #f5f3ff;
+
+  // Legacy widget status badges — dark theme
+  --color-status-expired-background: rgba(127, 29, 29, .28);
+  --color-status-expired-border: rgba(248, 113, 113, .42);
+  --color-status-expired-text: #fecaca;
+  --color-status-never-expires-background: rgba(30, 64, 175, .28);
+  --color-status-never-expires-border: rgba(96, 165, 250, .42);
+  --color-status-never-expires-text: #bfdbfe;
+}

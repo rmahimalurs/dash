@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-dashboard
+  namespace: devops-dashboard
+  labels:
+    app: devops-dashboard
+spec:
+  type: ClusterIP
+  selector:
+    app: devops-dashboard
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP

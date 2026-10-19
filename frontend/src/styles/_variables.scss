@@ -1,0 +1,142 @@
+@use './colors' as colors;
+
+// Login theme tokens. Keep visual changes centralized here.
+$font-size-sm: .875rem;
+$font-line-height-heading: 1.3;
+
+$login-light-page: #f4f7fa;
+$login-light-surface: #ffffff;
+$login-light-text: #17233f;
+$login-light-muted: #5f6b7a;
+$login-light-border: #d9e0e8;
+$login-light-input: #ffffff;
+
+$login-dark-page: #121a2b;
+$login-dark-surface: #1d293d;
+$login-dark-text: #f4f7fb;
+$login-dark-muted: #aebbd0;
+$login-dark-border: #3b4b66;
+$login-dark-input: #273750;
+
+$login-brand: #071452;
+$login-brand-light: #173d83;
+$login-accent: #2563eb;
+$login-accent-light: #60a5fa;
+$login-focus: #38bdf8;
+$login-danger-bg: #fef2f2;
+$login-danger-border: #fecaca;
+$login-danger-text: #b91c1c;
+
+// Semantic component variables. These reference raw color tokens from
+// _colors.scss, keeping component styles independent from palette values.
+:root {
+  // CMS Design System typography tokens used by component styles.
+  --font-size-sm: #{$font-size-sm};
+  --font-line-height-heading: #{$font-line-height-heading};
+
+  // CMS Design System badge tokens used by .ds-c-badge and its variations.
+  --badge__background-color: var(--color-badge-background);
+  --badge__background-color--info: var(--color-badge-info-background);
+  --badge__background-color--success: var(--color-badge-success-background);
+  --badge__background-color--warn: var(--color-badge-warning-background);
+  --badge__background-color--alert: var(--color-badge-error-background);
+  --badge__font-color: var(--color-badge-font);
+  --badge__font-color--info: var(--color-badge-font);
+  --badge__font-color--success: var(--color-badge-font);
+  --badge__font-color--warn: var(--color-badge-warning-font);
+  --badge__font-color--alert: var(--color-badge-font);
+  --badge__border-radius: 2px;
+
+  --status-expired-background: var(--color-status-expired-background);
+  --status-expired-border: var(--color-status-expired-border);
+  --status-expired-text: var(--color-status-expired-text);
+  --status-never-expires-background: var(--color-status-never-expires-background);
+  --status-never-expires-border: var(--color-status-never-expires-border);
+  --status-never-expires-text: var(--color-status-never-expires-text);
+
+  // Application semantic variables mapped to the raw color tokens.
+  --alert-background-info: var(--color-alert-info-background);
+  --alert-border-info: var(--color-alert-info-border);
+  --alert-text-info: var(--color-alert-info-text);
+  --alert-icon-info: var(--color-alert-info-icon);
+  --alert-background-success: var(--color-alert-success-background);
+  --alert-border-success: var(--color-alert-success-border);
+  --alert-text-success: var(--color-alert-success-text);
+  --alert-icon-success: var(--color-alert-success-icon);
+  --alert-background-warning: var(--color-alert-warning-background);
+  --alert-border-warning: var(--color-alert-warning-border);
+  --alert-text-warning: var(--color-alert-warning-text);
+  --alert-icon-warning: var(--color-alert-warning-icon);
+  --alert-background-error: var(--color-alert-error-background);
+  --alert-border-error: var(--color-alert-error-border);
+  --alert-text-error: var(--color-alert-error-text);
+  --alert-icon-error: var(--color-alert-error-icon);
+
+  --badge-background-dev: var(--color-badge-dev-background);
+  --badge-border-dev: var(--color-badge-dev-border);
+  --badge-text-dev: var(--color-badge-dev-text);
+  --badge-background-prod: var(--color-badge-prod-background);
+  --badge-border-prod: var(--color-badge-prod-border);
+  --badge-text-prod: var(--color-badge-prod-text);
+}
+
+// CMS Design System dropdown tokens. The dropdown component consumes these
+// custom properties for its trigger, menu, focus state, and selected option.
+$dropdown-light-background: $login-light-input;
+$dropdown-light-base: $login-light-text;
+$dropdown-light-border: $login-light-border;
+$dropdown-light-focus-light: rgba(56, 189, 248, .18);
+$dropdown-light-focus-dark: $login-focus;
+$dropdown-light-primary-lightest: #eaf4ff;
+$dropdown-light-primary: $login-accent;
+$dropdown-light-shadow: rgba(95, 107, 122, .28);
+$dropdown-border-width: 1px;
+$dropdown-border-radius: .25rem;
+$dropdown-padding: .75rem;
+$dropdown-font-weight-bold: 700;
+$dropdown-spacer-1: .5rem;
+$dropdown-spacer-2: 1rem;
+$dropdown-white: #fff;
+$dropdown-compact-padding: .5rem;
+
+$dropdown-dark-background: $login-dark-input;
+$dropdown-dark-base: $login-dark-text;
+$dropdown-dark-border: $login-dark-border;
+$dropdown-dark-focus-light: rgba(56, 189, 248, .24);
+$dropdown-dark-focus-dark: #7dd3fc;
+$dropdown-dark-primary-lightest: #123b5b;
+$dropdown-dark-primary: #2563eb;
+$dropdown-dark-shadow: rgba(0, 0, 0, .4);
+
+// Sidebar theme tokens.
+$sidebar-light-bg: #ffffff;
+$sidebar-light-surface: #f4f7fa;
+$sidebar-light-text: #17233f;
+$sidebar-light-muted: #687588;
+$sidebar-light-border: #d9e0e8;
+$sidebar-light-hover: #eef4fb;
+
+$sidebar-dark-bg: #05234d;
+$sidebar-dark-surface: #082d62;
+$sidebar-dark-text: #f4f7fb;
+$sidebar-dark-muted: #9fb5c4;
+$sidebar-dark-border: rgba(84, 178, 255, .34);
+$sidebar-dark-hover: rgba(58, 151, 245, .24);
+$sidebar-accent: #0788d8;
+$sidebar-danger: #fca5a5;
+
+// CMS banner theme tokens.
+$banner-light-bg: #eef3f8;
+$banner-light-text: #17233f;
+$banner-light-border: #d9e0e8;
+$banner-light-link: #174ea6;
+$banner-dark-bg: #1d293d;
+$banner-dark-text: #f4f7fb;
+$banner-dark-border: #3b4b66;
+$banner-dark-link: #93c5fd;
+
+// Shared page wave tokens.
+$page-wave-light: #1786d5;
+$page-wave-light-accent: #d69b24;
+$page-wave-dark: #21b8ff;
+$page-wave-dark-accent: #f4c542;

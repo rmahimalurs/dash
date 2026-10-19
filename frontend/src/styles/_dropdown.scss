@@ -1,0 +1,143 @@
+@use './variables' as *;
+
+// Theme the CMS Design System Dropdown through the custom properties it reads.
+// Keeping these on the component prevents login-page tokens from changing
+// unrelated CMS Design System fields elsewhere in the application.
+.ds-c-dropdown {
+  --color-background: #{$dropdown-light-background};
+  --color-base: #{$dropdown-light-base};
+  --color-focus-light: #{$dropdown-light-focus-light};
+  --color-focus-dark: #{$dropdown-light-focus-dark};
+  --color-gray-light: #{$dropdown-light-shadow};
+  --color-primary-lightest: #{$dropdown-light-primary-lightest};
+  --color-primary: #{$dropdown-light-primary};
+  --color-white: #{$dropdown-white};
+  --font-weight-bold: #{$dropdown-font-weight-bold};
+  --spacer-1: #{$dropdown-spacer-1};
+  --spacer-2: #{$dropdown-spacer-2};
+  --text-input__background-color: #{$dropdown-light-background};
+  --text-input__border-color: #{$dropdown-light-border};
+  --text-input__border-radius: #{$dropdown-border-radius};
+  --text-input__border-width: #{$dropdown-border-width};
+  --text-input__color: #{$dropdown-light-base};
+  --text-input__padding: #{$dropdown-padding};
+
+  .ds-c-dropdown__menu-container {
+    background-color: $dropdown-light-background !important;
+    opacity: 1;
+    isolation: isolate;
+    z-index: 1001;
+
+    .ds-c-dropdown__menu,
+    .ds-c-dropdown__menu-item,
+    .ds-c-dropdown__menu-item-group-label {
+      background-color: $dropdown-light-background !important;
+    }
+
+    .ds-c-dropdown__menu-item--selected {
+      background-color: $dropdown-light-primary !important;
+      color: $dropdown-white !important;
+    }
+
+    .ds-c-dropdown__menu-item--highlighted {
+      background-color: $dropdown-light-primary-lightest !important;
+      color: $dropdown-light-base !important;
+    }
+  }
+}
+
+.dark .ds-c-dropdown {
+  --color-background: #{$dropdown-dark-background};
+  --color-base: #{$dropdown-dark-base};
+  --color-focus-light: #{$dropdown-dark-focus-light};
+  --color-focus-dark: #{$dropdown-dark-focus-dark};
+  --color-gray-light: #{$dropdown-dark-shadow};
+  --color-primary-lightest: #{$dropdown-dark-primary-lightest};
+  --color-primary: #{$dropdown-dark-primary};
+  --color-white: #{$dropdown-white};
+  --font-weight-bold: #{$dropdown-font-weight-bold};
+  --spacer-1: #{$dropdown-spacer-1};
+  --spacer-2: #{$dropdown-spacer-2};
+  --text-input__background-color: #{$dropdown-dark-background};
+  --text-input__border-color: #{$dropdown-dark-border};
+  --text-input__border-radius: #{$dropdown-border-radius};
+  --text-input__border-width: #{$dropdown-border-width};
+  --text-input__color: #{$dropdown-dark-base};
+  --text-input__padding: #{$dropdown-padding};
+
+  .ds-c-dropdown__menu-container {
+    background-color: $dropdown-dark-background !important;
+
+    .ds-c-dropdown__menu,
+    .ds-c-dropdown__menu-item,
+    .ds-c-dropdown__menu-item-group-label {
+      background-color: $dropdown-dark-background !important;
+    }
+
+    .ds-c-dropdown__menu-item--selected {
+      background-color: $dropdown-dark-primary !important;
+      color: $dropdown-white !important;
+    }
+
+    .ds-c-dropdown__menu-item--highlighted {
+      background-color: $dropdown-dark-primary-lightest !important;
+      color: $dropdown-dark-base !important;
+    }
+  }
+}
+
+// CMS Dropdown menus can be rendered with transparent list items by default.
+// Give every dropdown an opaque surface so content behind the menu is never
+// visible through the menu or its options.
+.ds-c-dropdown__menu-container,
+.ds-c-dropdown__menu,
+.ds-c-dropdown__menu-item,
+.ds-c-dropdown__menu-item-group-label {
+  background-color: $dropdown-light-background !important;
+  opacity: 1;
+}
+
+.dark .ds-c-dropdown__menu-container,
+.dark .ds-c-dropdown__menu,
+.dark .ds-c-dropdown__menu-item,
+.dark .ds-c-dropdown__menu-item-group-label {
+  background-color: $dropdown-dark-background !important;
+}
+
+.ds-c-dropdown__menu-item--selected {
+  background-color: $dropdown-light-primary !important;
+  color: $dropdown-white !important;
+}
+
+.ds-c-dropdown__menu-item--highlighted {
+  background-color: $dropdown-light-primary-lightest !important;
+  color: $dropdown-light-base !important;
+}
+
+.dark .ds-c-dropdown__menu-item--selected {
+  background-color: $dropdown-dark-primary !important;
+  color: $dropdown-white !important;
+}
+
+.dark .ds-c-dropdown__menu-item--highlighted {
+  background-color: $dropdown-dark-primary-lightest !important;
+  color: $dropdown-dark-base !important;
+}
+
+// Keep the login menu above the card footer without changing stacking behavior
+// for dropdowns used elsewhere in the application.
+.login-page .ds-c-dropdown {
+  position: relative;
+  z-index: 2;
+}
+
+.login-page__footer {
+  position: relative;
+  z-index: 0;
+}
+
+// Compact variation for dropdowns that need less vertical padding while
+// retaining the CMS Design System component and interaction behavior.
+.login-page .ds-c-dropdown.dropdown--compact {
+  --text-input__padding: #{$dropdown-compact-padding};
+}

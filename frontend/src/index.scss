@@ -1,0 +1,222 @@
+@use './styles/variables' as *;
+@use './styles/theme';
+@use './styles/cards';
+@use './styles/buttons';
+@use './styles/badges';
+@use './styles/alerts';
+@use './styles/dropdown';
+@use './styles/sidebar';
+@use './styles/banner';
+@use './styles/page-waves';
+
+@import '@cmsgov/design-system/css/index.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer components {
+  .input-field {
+    @apply w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cms-blue focus:border-transparent transition-shadow duration-150;
+  }
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+}
+
+/* ─── Dark mode global overrides ────────────────────────────────────────────── */
+/* Applied via 'dark' class on <html>. Covers all components without per-file   */
+/* edits — specificity of .dark .class beats plain .class.                       */
+
+.dark {
+  color-scheme: dark;
+  /* CMS Design System muted token, tuned for 508 contrast on dark surfaces. */
+  --color-muted: #b7c8d8;
+  background-color: #061a3f;
+  color: rgb(243 244 246);            /* gray-100 */
+}
+
+/* Saturated blue dashboard shell matching the selected maintenance mockup. */
+.dark .app-shell {
+  background:
+    radial-gradient(ellipse at 86% 10%, rgba(55, 143, 240, .24), transparent 48rem),
+    linear-gradient(112deg, #061b30 0%, #082f5e 48%, #0b478c 100%) !important;
+}
+
+.dark .app-shell header {
+  background: linear-gradient(112deg, rgba(6, 28, 49, .96), rgba(8, 50, 96, .9) 58%, rgba(11, 71, 139, .84)) !important;
+  border-color: rgba(73, 177, 255, .28) !important;
+  box-shadow: 0 1px 0 rgba(33, 184, 255, .12);
+}
+
+.dark .app-shell main {
+  background: transparent;
+}
+
+.dark .app-shell footer {
+  background: rgba(5, 27, 65, .34) !important;
+  border-color: rgba(73, 177, 255, .18) !important;
+}
+
+/* Softer separators and clearer icon affordances on dark surfaces. */
+/* Text */
+.dark .text-gray-900 { color: rgb(249 250 251); }
+.dark .text-gray-800 { color: rgb(243 244 246); }
+.dark .text-gray-700 { color: rgb(209 213 219); }
+.dark .text-gray-600 { color: rgb(156 163 175); }
+.dark .text-cms-blue { color: #7dd3fc !important; }
+.dark .hover\:text-cms-blue:hover { color: #7dd3fc !important; }
+.dark .group:hover .group-hover\:text-cms-blue { color: #7dd3fc !important; }
+/* Backgrounds */
+.dark .bg-white    { background-color: rgb(31 41 55); }   /* gray-800 */
+.dark .bg-gray-50  { background-color: rgb(17 24 39); }   /* gray-900 */
+.dark .bg-gray-100 { background-color: rgb(55 65 81); }   /* gray-700 */
+.dark .bg-gray-200 { background-color: rgb(75 85 99); }   /* gray-600 */
+
+/* Keep dashboard cards closer to the blue-gray mockup than neutral gray. */
+.dark .app-shell .bg-white,
+.dark .app-shell .bg-gray-800 { background-color: #0b3471 !important; }
+.dark .app-shell .bg-gray-50 { background-color: #082b65 !important; }
+.dark .app-shell .bg-gray-100 { background-color: #144a91 !important; }
+.dark .app-shell .border-gray-100,
+.dark .app-shell .border-gray-200,
+.dark .app-shell .border-gray-300 { border-color: rgba(83, 190, 235, .12) !important; }
+
+/* Borders */
+.dark .border-gray-100 { border-color: rgba(148, 163, 184, .12); }
+.dark .border-gray-200 { border-color: rgba(148, 163, 184, .18); }
+.dark .border-gray-300 { border-color: rgba(148, 163, 184, .24); }
+
+/* Hover backgrounds */
+.dark .hover\:bg-gray-50:hover  { background-color: rgb(55 65 81); }
+.dark .hover\:bg-gray-100:hover { background-color: rgb(75 85 99); }
+.dark .hover\:bg-blue-50\/40:hover { background-color: rgba(30 58 138 / 0.2); }
+
+/* Tables */
+.dark table thead tr   { background-color: rgba(45, 55, 72, .72); }
+.dark table thead th   { color: rgb(156 163 175); border-color: rgba(148, 163, 184, .16); }
+.dark table tbody tr   { border-color: rgba(148, 163, 184, .16); }
+.dark table tbody td   { color: rgb(209 213 219); border-color: rgba(148, 163, 184, .16); }
+.dark table tbody tr:hover { background-color: rgba(55 65 81 / 0.4); }
+.dark .divide-gray-50 > * + *  { border-color: rgba(148, 163, 184, .08); }
+.dark .divide-gray-100 > * + * { border-color: rgba(148, 163, 184, .12); }
+.dark .divide-gray-200 > * + * { border-color: rgba(148, 163, 184, .16); }
+.dark .divide-y > * + * { border-color: rgba(148, 163, 184, .12); }
+
+/* Form inputs */
+.dark .input-field {
+  background-color: rgb(55 65 81);
+  border-color: rgb(107 114 128);
+  color: rgb(243 244 246);
+}
+.dark .input-field::placeholder { color: rgb(156 163 175); }
+.dark .label { color: rgb(209 213 219); }
+
+/* ENV / colored badges — muted tints in dark mode                              */
+/* !important needed to override Tailwind's --tw-bg-opacity custom property     */
+.dark .bg-blue-100   { background-color: rgba(30, 58, 138, 0.25) !important; }
+.dark .text-blue-700 { color: rgb(147, 197, 253) !important; }
+.dark .text-blue-800 { color: rgb(147, 197, 253) !important; }
+.dark .bg-blue-50    { background-color: rgba(30, 58, 138, 0.15) !important; }
+.dark .text-blue-600 { color: rgb(147, 197, 253) !important; }
+.dark .border-blue-100 { border-color: rgba(30, 58, 138, 0.4) !important; }
+.dark .border-blue-200 { border-color: rgba(30, 58, 138, 0.5) !important; }
+
+.dark .bg-purple-100 { background-color: rgba(88, 28, 135, 0.25) !important; }
+.dark .text-purple-700 { color: rgb(216, 180, 254) !important; }
+.dark .text-purple-800 { color: rgb(216, 180, 254) !important; }
+.dark .bg-purple-50  { background-color: rgba(88, 28, 135, 0.15) !important; }
+
+.dark .bg-green-100  { background-color: rgba(6, 78, 59, 0.25) !important; }
+.dark .text-green-700 { color: rgb(110, 231, 183) !important; }
+.dark .text-green-800 { color: rgb(110, 231, 183) !important; }
+.dark .bg-green-50   { background-color: rgba(6, 78, 59, 0.15) !important; }
+.dark .border-green-100 { border-color: rgba(6, 78, 59, 0.4) !important; }
+.dark .border-green-200 { border-color: rgba(6, 78, 59, 0.5) !important; }
+
+.dark .bg-teal-100   { background-color: rgba(19, 78, 74, 0.25) !important; }
+.dark .text-teal-700 { color: rgb(94, 234, 212) !important; }
+.dark .text-teal-800 { color: rgb(94, 234, 212) !important; }
+
+.dark .bg-indigo-100 { background-color: rgba(49, 46, 129, 0.25) !important; }
+.dark .text-indigo-700 { color: rgb(165, 180, 252) !important; }
+.dark .text-indigo-800 { color: rgb(165, 180, 252) !important; }
+.dark .bg-indigo-50  { background-color: rgba(49, 46, 129, 0.15) !important; }
+.dark .hover\:bg-indigo-100:hover { background-color: rgba(49, 46, 129, 0.35) !important; }
+
+.dark .bg-orange-100 { background-color: rgba(124, 45, 18, 0.25) !important; }
+.dark .text-orange-700 { color: rgb(253, 186, 116) !important; }
+.dark .text-orange-800 { color: rgb(253, 186, 116) !important; }
+
+.dark .bg-amber-100  { background-color: rgba(120, 53, 15, 0.25) !important; }
+.dark .text-amber-700 { color: rgb(252, 211, 77) !important; }
+.dark .text-amber-800 { color: rgb(252, 211, 77) !important; }
+.dark .text-amber-600 { color: rgb(251, 191, 36) !important; }
+.dark .text-amber-500 { color: rgb(245, 158, 11) !important; }
+
+.dark .bg-red-50     { background-color: rgba(127, 29, 29, 0.15) !important; }
+.dark .bg-red-100    { background-color: rgba(127, 29, 29, 0.25) !important; }
+.dark .text-red-700  { color: rgb(252, 165, 165) !important; }
+.dark .text-red-800  { color: rgb(252, 165, 165) !important; }
+.dark .border-red-100 { border-color: rgba(127, 29, 29, 0.4) !important; }
+.dark .border-red-200 { border-color: rgba(127, 29, 29, 0.5) !important; }
+
+.dark .bg-yellow-100 { background-color: rgba(113, 63, 18, 0.25) !important; }
+.dark .text-yellow-700 { color: rgb(253, 224, 71) !important; }
+.dark .text-yellow-800 { color: rgb(253, 224, 71) !important; }
+
+/* Hover states for action cards */
+.dark .hover\:bg-blue-100:hover   { background-color: rgba(30, 58, 138, 0.3) !important; }
+.dark .hover\:bg-red-100:hover    { background-color: rgba(127, 29, 29, 0.3) !important; }
+.dark .hover\:bg-green-100:hover  { background-color: rgba(6, 78, 59, 0.3) !important; }
+.dark .hover\:bg-purple-100:hover { background-color: rgba(88, 28, 135, 0.3) !important; }
+
+/* Ring / focus */
+.dark .focus\:ring-offset-2:focus { --tw-ring-offset-color: rgb(31 41 55); }
+
+/* Notification panel and modal */
+.dark .ring-1 { --tw-ring-color: rgb(75 85 99); }
+
+/* Animate pulse skeleton */
+.dark .animate-pulse { background-color: rgb(55 65 81); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+.dark ::-webkit-scrollbar-track { background: #1e293b; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* The design system styles bare `input[type=checkbox]` with display:inline-grid,
+   but the box it draws comes from .ds-c-choice, which this app never uses. A
+   native checkbox switched to inline-grid with no size, background or border
+   collapses and renders as nothing, which took out all 13 checkboxes including
+   the prod confirmations and the audit widgets' delete selections. */
+input[type='checkbox'],
+input[type='radio'] {
+  display: inline-block;
+  appearance: auto;
+  -webkit-appearance: auto;
+}
+
+/* Same cause, one element over: the design system also styles bare `label` with
+   margin-block:1.5em 0. In a `flex items-start` row that pushes the text a line
+   and a half below the checkbox beside it, which reads as the box floating above
+   its own sentence. All 107 labels in the app are bare; the 6 that want spacing
+   set their own Tailwind margin, which still wins over this. */
+label,
+legend {
+  margin-block: 0;
+}

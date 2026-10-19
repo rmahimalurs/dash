@@ -1,0 +1,19 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "devops-dashboard.fullname" . }}-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "devops-dashboard.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: {{ .Values.persistence.storageClass }}
+  {{- if .Values.persistence.volumeName }}
+  volumeName: {{ .Values.persistence.volumeName }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+{{- end }}

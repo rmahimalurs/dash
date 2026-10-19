@@ -1,0 +1,36 @@
+# Beta instance for design work. Smaller than prod and deliberately
+# credential-starved: DEV_MODE lets anyone sign in, and no token that can
+# write to Jira, Jenkins, GitHub, Artifactory or email is present.
+existingSecret: dashboard-beta-secrets
+
+backend:
+  replicas: 1
+  resources:
+    requests: { cpu: "250m", memory: "512Mi" }
+    limits:   { cpu: "1000m", memory: "2Gi" }
+
+frontend:
+  replicas: 1
+
+imagePullSecrets:
+  - name: artifactory-pull-secret
+
+ingress:
+  enabled: true
+  className: nginx
+  host: dashboard-beta.cloud.cms.gov
+  tls:
+    enabled: true
+    secretName: wildcard-cloud-cms-gov-tls
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: efs-sc
+
+serviceAccount:
+  create: true
+  name: dashboard-beta
+
+config:
+  ldapAccessGroup: ""
